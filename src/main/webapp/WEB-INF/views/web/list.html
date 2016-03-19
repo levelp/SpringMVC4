@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Пример со списком</title>
+</head>
+<body>
+
+<ul>
+    <li th:each="el : ${list}" th:text="${el}">
+    </li>
+</ul>
+
+<table>
+    <tr th:each="line : ${mul}">
+        <td th:each="el : ${line}" th:text="${el}">
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
