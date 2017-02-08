@@ -15,6 +15,11 @@ import javax.sql.DataSource;
 @Profile("test")
 public class EmbeddedDataSourceConfig {
 
+    /**
+     * Подключение к базе данных для тестов
+     *
+     * @return
+     */
     @Bean
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()

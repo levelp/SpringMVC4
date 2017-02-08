@@ -22,7 +22,6 @@ import java.util.Collections;
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AccountService implements UserDetailsService {
-    public static final String TEST_USERNAME = "user@local";
 
     @Autowired
     private AccountRepository accountRepository;
@@ -32,7 +31,9 @@ public class AccountService implements UserDetailsService {
 
     @PostConstruct
     protected void initialize() {
-        addIfNotExists(new Account(TEST_USERNAME, "demo", "ROLE_USER"));
+        for (int i = 1; i <= 9; i++) {
+            addIfNotExists(new Account("user" + i + "@local", "demo" + i, "ROLE_USER"));
+        }
         addIfNotExists(new Account("admin@local", "admin", "ROLE_ADMIN"));
     }
 

@@ -18,24 +18,53 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
+// Mock-объект (пустышка) - объект, который выдаёт какие-то
+// константные (или вычисленные/сгенерированные) ответы
+// Это нужно чтобы не менять реальную базу данных
+// не запускать реальный браузер и не использовать другие
+// "тяжеловестные ресурсы"
 @RunWith(MockitoJUnitRunner.class)
 public class AccountServiceTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    // AccountService используется реальный и мы
+    // в него передаём объекты-подделки
     @InjectMocks
     private AccountService accountService = new AccountService();
+
     @Mock
+    //@Autowired - реальный объект и тогда его нужно правильно инициализировать
     private AccountRepository accountRepositoryMock;
+
     @Mock
     private PasswordEncoder passwordEncoder;
 
+    // Проверяем что создаётся 10 пользователей при старте
     @Test
-    public void shouldInitializeWithTwoDemoUsers() {
+    public void shouldInitializeWithTenDemoUsers() {
         // act
         accountService.initialize();
         // assert
-        verify(accountRepositoryMock, times(2)).save(any(Account.class));
+        verify(accountRepositoryMock,
+                times(10)).
+                save(any(Account.class));
+    }
+
+    // Тестирование сохранения пользователя
+    @Test
+    public void testSaveUser() {
+        Account account = new Account();
+        account.setEmail("test@mail.ru");
+        account.setPassword("123");
+
+        // Просим сервис сохранить пользователя
+        accountService.save(account);
+
+        // Проверяем что у репозитория вызван метод сохранения
+        // пользователя
+        verify(accountRepositoryMock).save(account);
     }
 
     @Test
@@ -44,7 +73,8 @@ public class AccountServiceTest {
         thrown.expect(UsernameNotFoundException.class);
         thrown.expectMessage("user not found");
 
-        when(accountRepositoryMock.findOneByEmail("user@example.com")).thenReturn(null);
+        when(accountRepositoryMock.findOneByEmail("user@example.com")).
+                thenReturn(null);
         // act
         accountService.loadUserByUsername("user@example.com");
     }

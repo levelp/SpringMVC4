@@ -144,6 +144,7 @@
             <artifactId>guava</artifactId>
         </dependency>
         <!-- Test -->
+        <!-- JUnit -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

@@ -10,12 +10,23 @@ import java.util.List;
 /**
  * Обычный контроллер, после вызова каждого метода
  * которого будет рисоваться соответствующий view
+ * <p>
+ * Какие параметры могут быть у методов @Controller:
+ * http://docs.spring.io/spring-framework/docs/3.0.x/reference/mvc.html
+ * 1. ModelAndView
+ * 2. Model
+ * 3. Map
+ * 4. View
+ * 5. String - логическое имя view
+ * 6. void - не нужно ничего возвращать т.к. ответ заполняется при помощи
+ * параметров с типами: ServletResponse / HttpServletResponse
+ * (как в обычном сервлете)
  */
 @Controller
 public class MyWebController {
 
     @RequestMapping("web/list")
-    public String genList(Model model){
+    public String genList(Model model) {
         List<String> list = new ArrayList<>();
         list.add("Санкт-Петербург");
         list.add("Москва");
@@ -28,7 +39,7 @@ public class MyWebController {
         int[][] mul = new int[10][10];
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                mul[i][j] = (i+1) * (j+1);
+                mul[i][j] = (i + 1) * (j + 1);
             }
         }
         // и передаём его в view
